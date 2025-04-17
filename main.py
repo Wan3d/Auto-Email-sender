@@ -1,26 +1,18 @@
-import os
-from dotenv import load_dotenv
 from selenium.webdriver import Chrome
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import requests
 from bs4 import BeautifulSoup
 from email.message import EmailMessage
 import ssl
 import smtplib
 import time
+from credentials import gmailUser, gmailPassword, gmailReceiver
 
-load_dotenv()
-
-gmailUser = os.getenv("gmailUser")
-gmailPassword = os.getenv("gmailPassword")
 urlWords = "https://www.palabrasque.com/palabra-aleatoria.php?Submit=Nueva+palabra"
-gmailReceiver = os.getenv("gmailReceiver")
+
 
 def sendEmail(word, definitionWord, country, spanCurrentTime):
     # Create message
@@ -60,8 +52,7 @@ def main():
         driver = Chrome(service = service, options = option)
         driver.get(urlWords)
 
-        response = requests.get(urlWords)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
         word = soup.find('b').get_text()
 
         if word: print(f"Word generated succesfuly!")
