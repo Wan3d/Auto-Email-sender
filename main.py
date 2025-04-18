@@ -62,7 +62,7 @@ def main():
         driver.get(urlRAE)
         
         # If the word has definition in RAE
-        try: 
+        try:
             # We look for the meaning of the word in the HTML
             soup2 = BeautifulSoup(driver.page_source, 'html.parser')
             olClass = soup2.find('ol', class_="c-definitions")
@@ -92,7 +92,6 @@ def main():
 
             # Go to page and get hour from HTML
             driver.get(urlTimeZone)
-            soup2 = BeautifulSoup(driver.page_source, 'html.parser')
 
             spanCurrentTime = driver.find_element(By.ID, "currentTime").text
             if spanCurrentTime: print(f"Current time generated succesfuly!")
@@ -101,6 +100,10 @@ def main():
 
         except:
             print(f"There was an error!")
+            # Dispose browser
+            driver.quit()
+            # Repeat the function
+            continue
 
         # Dispose browser
         driver.quit()
